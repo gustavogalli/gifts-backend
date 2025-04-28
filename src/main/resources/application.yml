@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: gifts
+  datasource:
+    url: jdbc:mysql://localhost:3306/gifts?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update  # Pode ser create, update, validate, none (cuidado com 'create' pois ele apaga o banco a cada inicialização)
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
