@@ -13,7 +13,13 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
+    List<String> getAllCategories();
+
+    List<Product> getAllProductsByCategory(String category);
+
     Optional<Product> updateProduct(Long id, Product product);
+
+    void processPurchase(List<Product> purchasedProducts);
 
     boolean deleteProduct(Long id);
 }

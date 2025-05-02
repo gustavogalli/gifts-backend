@@ -5,6 +5,7 @@ import com.galli.gifts.repository.ProductRepository;
 import com.galli.gifts.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<String> getAllCategories(){
+        return productRepository.findAllDistinctCategories();
+    }
+
+    @Override
+    public List<Product> getAllProductsByCategory(String category) {
+        return productRepository.findAllProductsByCategory(category);
+    }
+
+    @Override
     public Optional<Product> updateProduct(Long id, Product updatedProduct) {
         Optional<Product> existingProduct = productRepository.findById(id);
 
@@ -40,13 +51,33 @@ public class ProductServiceImpl implements ProductService {
             Product productToUpdate = existingProduct.get();
             productToUpdate.setName(updatedProduct.getName());
             productToUpdate.setDescription(updatedProduct.getDescription());
-            productToUpdate.setPrice(updatedProduct.getPrice());
-            productToUpdate.setQuantity(updatedProduct.getQuantity());
             productToUpdate.setCategory(updatedProduct.getCategory());
+            productToUpdate.setStockQuantity(updatedProduct.getStockQuantity());
+            productToUpdate.setSoldQuantity(updatedProduct.getSoldQuantity());
+            productToUpdate.setPrice(updatedProduct.getPrice());
+            productToUpdate.setDiscountPercentage(updatedProduct.getDiscountPercentage());
 
             return Optional.of(productRepository.save(productToUpdate));
         } else {
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public void processPurchase(List<Product> purchasedProducts) {
+        for (Product purchasedProduct : purchasedProducts) {
+            productRepository.findById(purchasedProduct.getId()).ifPresent(product -> {
+                int quantityInCart = purchasedProduct.getQuantityInCart();
+                int newStock = product.getStockQuantity() - quantityInCart;
+                int newSold = product.getSoldQuantity() + quantityInCart;
+
+                product.setStockQuantity(newStock);
+                product.setSoldQuantity(newSold);
+                product.setPrice(product.getPrice().multiply(BigDecimal.ONE.subtract(product.getDiscountPercentage())));
+                product.setTotalGrossSales(product.getTotalGrossSales().add(product.getPrice().multiply(BigDecimal.valueOf(quantityInCart))));
+
+                productRepository.save(product);
+            });
         }
     }
 
