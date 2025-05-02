@@ -11,7 +11,7 @@ public class User {
 
     private String fullName;
 
-    private String address;
+    private String city;
 
     @Column(unique = true)
     private String username;
@@ -34,12 +34,12 @@ public class User {
         this.fullName = fullName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCity() {
+        return city;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getUsername() {

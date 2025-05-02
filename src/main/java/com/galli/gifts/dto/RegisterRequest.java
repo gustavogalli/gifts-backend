@@ -3,7 +3,7 @@ package com.galli.gifts.dto;
 public class RegisterRequest {
 
     private String fullName;
-    private String address;
+    private String city;
     private String username;
     private String password;
 
@@ -15,12 +15,12 @@ public class RegisterRequest {
         this.fullName = fullName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCity() {
+        return city;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getUsername() {

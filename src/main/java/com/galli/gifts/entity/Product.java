@@ -4,21 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.math.BigDecimal;
 
 @Entity
 public class Product {
-
-    public Product() {
-    }
-
-    public Product(Long id, String name, String description, Double price, Integer quantity, String category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
-        this.category = category;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +15,29 @@ public class Product {
 
     private String name;
     private String description;
-    private Double price;
-    private Integer quantity;
     private String category;
+    private Integer stockQuantity;
+    private Integer soldQuantity;
+    private Integer quantityInCart;
+    private BigDecimal price;
+    private BigDecimal discountPercentage;
+    private BigDecimal totalGrossSales;
+
+    public Product() {
+    }
+
+    public Product(Long id, String name, String description, String category, Integer stockQuantity, Integer soldQuantity, Integer quantityInCart, BigDecimal price, BigDecimal discountPercentage, BigDecimal totalGrossSales) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.stockQuantity = stockQuantity;
+        this.soldQuantity = soldQuantity;
+        this.quantityInCart = quantityInCart;
+        this.price = price;
+        this.discountPercentage = discountPercentage;
+        this.totalGrossSales = totalGrossSales;
+    }
 
     public Long getId() {
         return id;
@@ -54,27 +63,59 @@ public class Product {
         this.description = description;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public Integer getSoldQuantity() {
+        return soldQuantity;
+    }
+
+    public void setSoldQuantity(Integer soldQuantity) {
+        this.soldQuantity = soldQuantity;
+    }
+
+    public Integer getQuantityInCart() {
+        return quantityInCart;
+    }
+
+    public void setQuantityInCart(Integer quantityInCart) {
+        this.quantityInCart = quantityInCart;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public BigDecimal getTotalGrossSales() {
+        return totalGrossSales;
+    }
+
+    public void setTotalGrossSales(BigDecimal totalGrossSales) {
+        this.totalGrossSales = totalGrossSales;
     }
 }
