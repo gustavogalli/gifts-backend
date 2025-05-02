@@ -1,6 +1,7 @@
 package com.galli.gifts.controller;
 
 import com.galli.gifts.dto.LoginRequest;
+import com.galli.gifts.dto.LoginResponse;
 import com.galli.gifts.dto.RegisterRequest;
 import com.galli.gifts.service.impl.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +22,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
-        String token = userService.login(loginRequest);
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(userService.login(loginRequest));
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
         userService.register(registerRequest);
-        return ResponseEntity.ok("Usuário registrado com sucesso!");
+        return ResponseEntity.ok("User successfully registered!");
     }
 }

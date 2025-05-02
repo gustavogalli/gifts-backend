@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +42,9 @@ class ProductControllerTest {
         product.setId(1L);
         product.setName("Test Product");
         product.setDescription("Test Description");
-        product.setPrice(100.0);
-        product.setQuantity(10);
+        product.setPrice(BigDecimal.valueOf(100.0));
+        product.setStockQuantity(10);
+        product.setSoldQuantity(5);
         product.setCategory("Test Category");
     }
 
@@ -52,12 +54,13 @@ class ProductControllerTest {
 
         mockMvc.perform(post("/products")
                         .contentType("application/json")
-                        .content("{\"name\":\"Test Product\",\"description\":\"Test Description\",\"price\":100.0,\"quantity\":10,\"category\":\"Test Category\"}"))
+                        .content("{\"name\":\"Test Product\",\"description\":\"Test Description\",\"price\":100.0,\"stockQuantity\":10,\"soldQuantity\":5,\"category\":\"Test Category\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Test Product"))
                 .andExpect(jsonPath("$.description").value("Test Description"))
                 .andExpect(jsonPath("$.price").value(100.0))
-                .andExpect(jsonPath("$.quantity").value(10))
+                .andExpect(jsonPath("$.stockQuantity").value(10))
+                .andExpect(jsonPath("$.soldQuantity").value(5))
                 .andExpect(jsonPath("$.category").value("Test Category"));
 
         verify(productService, times(1)).createProduct(any(Product.class));
@@ -72,7 +75,8 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.name").value("Test Product"))
                 .andExpect(jsonPath("$.description").value("Test Description"))
                 .andExpect(jsonPath("$.price").value(100.0))
-                .andExpect(jsonPath("$.quantity").value(10))
+                .andExpect(jsonPath("$.stockQuantity").value(10))
+                .andExpect(jsonPath("$.soldQuantity").value(5))
                 .andExpect(jsonPath("$.category").value("Test Category"));
 
         verify(productService, times(1)).getProductById(anyLong());
@@ -107,12 +111,13 @@ class ProductControllerTest {
 
         mockMvc.perform(put("/products/1")
                         .contentType("application/json")
-                        .content("{\"name\":\"Updated Product\",\"description\":\"Updated Description\",\"price\":150.0,\"quantity\":20,\"category\":\"Updated Category\"}"))
+                        .content("{\"name\":\"Updated Product\",\"description\":\"Updated Description\",\"price\":150.0,\"stockQuantity\":20,\"soldQuantity\":20,\"category\":\"Updated Category\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Test Product"))
                 .andExpect(jsonPath("$.description").value("Test Description"))
                 .andExpect(jsonPath("$.price").value(100.0))
-                .andExpect(jsonPath("$.quantity").value(10))
+                .andExpect(jsonPath("$.stockQuantity").value(10))
+                .andExpect(jsonPath("$.soldQuantity").value(5))
                 .andExpect(jsonPath("$.category").value("Test Category"));
 
         verify(productService, times(1)).updateProduct(anyLong(), any(Product.class));
@@ -124,7 +129,7 @@ class ProductControllerTest {
 
         mockMvc.perform(put("/products/1")
                         .contentType("application/json")
-                        .content("{\"name\":\"Updated Product\",\"description\":\"Updated Description\",\"price\":150.0,\"quantity\":20,\"category\":\"Updated Category\"}"))
+                        .content("{\"name\":\"Updated Product\",\"description\":\"Updated Description\",\"price\":150.0,\"stockQuantity\":10,\"soldQuantity\":5,\"category\":\"Updated Category\"}"))
                 .andExpect(status().isNotFound());
 
         verify(productService, times(1)).updateProduct(anyLong(), any(Product.class));

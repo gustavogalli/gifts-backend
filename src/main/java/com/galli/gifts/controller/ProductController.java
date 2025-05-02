@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
@@ -40,6 +41,24 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<String>> getAllCategories() {
+        List<String> categories = productService.getAllCategories();
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Product>> getAllProductsByCategory(@PathVariable String category) {
+        List<Product> products = productService.getAllProductsByCategory(category);
+        return ResponseEntity.ok(products);
+    }
+
+    @PostMapping("/purchase")
+    public ResponseEntity<Void> purchaseProducts(@RequestBody List<Product> purchasedProducts) {
+        productService.processPurchase(purchasedProducts);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
